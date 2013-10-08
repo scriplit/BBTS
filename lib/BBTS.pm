@@ -21,9 +21,10 @@ get '/users' => sub {
 		push @$ret,
 		  {
 			id        => $e->id,
+			login     => $e->login,
 			lastname  => $e->lastname,
 			firstname => $e->firstname,
-			age       => $e->age
+			unit      => $e->unit
 		  };
 	}
 	return to_json($ret);
@@ -42,9 +43,10 @@ sub on_get_user {
 		return to_json(
 			{
 				id        => $e->id,
+				login     => $e->login,
 				lastname  => $e->lastname,
 				firstname => $e->firstname,
-				age       => $e->age
+				unit      => $e->unit
 			}
 		);
 	}
@@ -86,9 +88,10 @@ sub on_update_user {
 		if ( @userSet == 1 ) {
 			$userSet[0]->update(
 				{
+					login     => $user->{login},
 					firstname => $user->{firstname},
 					lastname  => $user->{lastname},
-					age       => $user->{age},
+					unit      => $user->{unit},
 				}
 			);
 			return to_json( status_ok("user updated") );

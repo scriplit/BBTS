@@ -1,7 +1,7 @@
 package BBTS::Schema::Result::User;
 use base qw/DBIx::Class::Core/;
 
-__PACKAGE__->table('user');
+__PACKAGE__->table('users');
 
 __PACKAGE__->add_columns(
 	id => {
@@ -29,7 +29,7 @@ __PACKAGE__->add_columns(
 	age => {
 		data_type         => 'integer',
 		size              => 8,
-		is_nullable       => 0,
+		is_nullable       => 1,
 	},
 	unit => {
 		data_type         => 'varchar',

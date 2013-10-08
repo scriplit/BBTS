@@ -1,0 +1,47 @@
+{
+   "abstract" : "YOUR APPLICATION ABSTRACT",
+   "author" : [
+      "ennio <scriplit@yahoo.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 6.6302, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "BBTS",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "DBIx::Class" : "0.0825",
+            "Dancer2" : "0.04",
+            "Dancer2::Plugin::DBIC" : "0.0004",
+            "Dancer2::Plugin::REST" : "0.2",
+            "SQL::Translator" : "0.11016",
+            "Test::More" : "0",
+            "YAML" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "0.1"
+}

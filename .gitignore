@@ -214,3 +214,10 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#############
+## Perl
+#############
+blib/
+Makefile
+pm_to_blib

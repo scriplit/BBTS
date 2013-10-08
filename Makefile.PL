@@ -9,7 +9,7 @@ $eumm_version =~ s/_//;
 
 WriteMakefile(
     NAME                => 'BBTS',
-    AUTHOR              => q{YOUR NAME <youremail@example.com>},
+    AUTHOR              => q{ennio <scriplit@yahoo.com>},
     VERSION_FROM        => 'lib/BBTS.pm',
     ABSTRACT            => 'YOUR APPLICATION ABSTRACT',
     ($eumm_version >= 6.3001
@@ -23,6 +23,7 @@ WriteMakefile(
         'DBIx::Class' => 0.08250,
         'Dancer2::Plugin::REST'=> 0.20,
         'Dancer2::Plugin::DBIC'=> 0.0004,
+        'SQL::Translator'=> 0.11016,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'BBTS-*' },
