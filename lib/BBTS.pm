@@ -10,8 +10,32 @@ use Dancer2::Plugin::REST;
 use Dancer2::Plugin::DBIC qw(schema resultset rset);
 use BBTS::Schema;
 
+#hook before => sub {
+#    if (!session('user') && request->dispatch_path !~ m{^/login}) {
+#        forward '/login', { requested_path => request->dispatch_path };
+#    }
+#};
+
+get '/login' => sub {
+  template 'login', { path => param('requested_path'), title_page => "Login" };
+};
+
+post '/login' => sub {
+    # Validate the username and password they supplied
+    if (param('user') eq 'bob' && param('pass') eq 'letmein') {
+        session user => param('user');
+        redirect param('path') || '/';
+    } else {
+        redirect '/login?failed=1';
+    }
+};
+
 get '/' => sub {
 	send_file 'index.html';
+};
+
+get '/usermgr' => sub {
+	template 'usermgr', { path => param('requested_path'), title_page => "User management" };
 };
 
 get '/users' => sub {
