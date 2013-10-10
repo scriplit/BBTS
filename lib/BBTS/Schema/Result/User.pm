@@ -7,43 +7,35 @@ __PACKAGE__->add_columns(
 	id => {
 		accessor          => 'user',
 		data_type         => 'integer',
-		size              => 16,
 		is_nullable       => 0,
 		is_auto_increment => 1,
 	},
 	dn => {
-		data_type         => 'varchar',
-		size              => 256,
+		data_type         => 'text',
 		is_nullable       => 1,
 	},
 	firstname => {
-		data_type         => 'varchar',
-		size              => 128,
+		data_type         => 'text',
 		is_nullable       => 0,
 	},
 	lastname => {
-		data_type         => 'varchar',
-		size              => 128,
+		data_type         => 'text',
 		is_nullable       => 0,
 	},
 	age => {
 		data_type         => 'integer',
-		size              => 8,
 		is_nullable       => 1,
 	},
 	unit => {
-		data_type         => 'varchar',
-		size              => 32,
+		data_type         => 'text',
 		is_nullable       => 1,
 	},
 	login => {
-		data_type   => 'varchar',
-		size        => 16,
+		data_type   => 'text',
 		is_nullable => 1,
 	},
 	passwd => {
-		data_type   => 'varchar',
-		size        => 16,
+		data_type   => 'text',
 		is_nullable => 1,
 	}
 );

@@ -1,0 +1,42 @@
+  <script type="text/template" id="task-list-template">
+    <a href="#/new" class="btn btn-primary">New</a>
+    <hr />
+    <table class="table striped" id="task-list">
+      <thead>
+        <tr>
+          <th>Task id</th><th>Title</th><th>Start</th><th>Days</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% _.each(tasks, function(task) { %>
+          <tr>
+          	<td><%= htmlEncode(task.get('id')) %></td>
+            <td><%= htmlEncode(task.get('title')) %></td>
+            <td><%= htmlEncode(task.get('start')) %></td>
+            <td><%= htmlEncode(task.get('effort')) %></td>
+            <td><a class="btn" href="#/edit/<%= task.id %>">Edit</a></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </script>
+
+  <script type="text/template" id="edit-task-template">
+    <form class="edit-task-form">
+      <legend><%= task ? 'Edit' : 'New' %> Task</legend>
+        <label>Task id</label>
+        <input name="id" type="text" value="<%= task ? task.get('id') : '' %>">
+        <label>Title</label>
+        <input name="title" type="text" value="<%= task ? task.get('title') : '' %>">
+        <label>Start</label>
+        <input name="start" type="text" value="<%= user ? task.get('start') : '' %>">
+        <label>Days</label>
+        <input name="effort" type="text" value="<%= task ? task.get('effort') : '' %>">
+        <hr />
+       <button type="submit" class="btn"><%= task ? 'Update' : 'Create' %></button>
+       <% if(task) { %>
+        <input type="hidden" name="id" value="<%= task.id %>" />
+       <button type="button" data-task-id="<%= task.id %>" class="btn btn-danger delete">Delete</button>
+       <% }; %>
+    </form>
+  </script>

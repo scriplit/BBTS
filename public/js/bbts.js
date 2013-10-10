@@ -29,6 +29,16 @@ var User = Backbone.Model.extend({
 	urlRoot : '/user'
 });
 
+var Tasks = Backbone.Collection.extend({
+	url : '/tasks'
+});
+
+var User = Backbone.Model.extend({
+	urlRoot : '/task'
+});
+
+// ----------- Users ------------
+
 var UserListView = Backbone.View.extend({
 	el : '.page',
 	render : function() {
@@ -102,21 +112,139 @@ var UserEditView = Backbone.View.extend({
 
 var userEditView = new UserEditView();
 
+// ----------- Tasks ------------
+
+var TaskListView = Backbone.View.extend({
+	el : '.page',
+	render : function() {
+		var that = this;
+		var tasks = new Tasks();
+		tasks.fetch({
+			success : function(tasks) {
+				var template = _.template($('#task-list-template').html(), {
+					tasks : tasks.models
+				});
+				that.$el.html(template);
+			}
+		})
+	}
+});
+
+var taskListView = new TaskListView();
+
+var TaskEditView = Backbone.View.extend({
+	el : '.page',
+	events : {
+		'submit .edit-task-form' : 'saveTask',
+		'click .delete' : 'deleteTask'
+	},
+	saveTask : function(ev) {
+		var taskDetails = $(ev.currentTarget).serializeObject();
+		var task = new Task();
+		task.save(taskDetails, {
+			success : function(task) {
+				router.navigate('', {
+					trigger : true
+				});
+			}
+		});
+		return false;
+	},
+	deleteTask : function(ev) {
+		this.task.destroy({
+			success : function() {
+				console.log('destroyed');
+				router.navigate('', {
+					trigger : true
+				});
+			}
+		});
+		return false;
+	},
+	render : function(options) {
+		var that = this;
+		if (options.id) {
+			that.task = new Task({
+				id : options.id
+			});
+			that.task.fetch({
+				success : function(task) {
+					var template = _.template($('#edit-task-template').html(),
+							{
+								task : task
+							});
+					that.$el.html(template);
+				}
+			})
+		} else {
+			var template = _.template($('#edit-task-template').html(), {
+				user : null
+			});
+			that.$el.html(template);
+		}
+	}
+});
+
+var taskListView = new TaskListView();
+
+
+// ---------- Home ------------
+
+var HomeView = Backbone.View.extend({
+	el : '.page',
+	events : {
+		'click .users' : 'manageUsers',
+		'click .tasks' : 'manageTasks'
+	},
+	manageUsers : function(ev) {
+		router.navigate('usermgr', {trigger: 'true'});
+		return false;
+	},
+	manageTasks : function(ev) {
+		router.navigate('taskmgr', {trigger: 'true'});
+		return false;
+	},
+	render: function(options) {
+		var template = _.template($('#home-template').html());
+		this.$el.html(template);
+	}
+});
+var homeView = new HomeView();
+
+// ---------- Routes ----------
+
 var Router = Backbone.Router.extend({
 	routes : {
 		"" : "home",
-		"edit/:id" : "edit",
-		"new" : "edit",
+		"usermgr" : "homeUser",
+		"usermgr/edit/:id" : "editUser",
+		"usermgr/new" : "editUser",
+		"taskmgr" : "homeTask",
+		"taskmgr/edit/:id" : "editTask",
+		"taskmgr/new" : "editTask",
 	}
 });
 
 var router = new Router;
 router.on('route:home', function() {
+	// render home
+	homeView.render();
+})
+router.on('route:homeUser', function() {
 	// render user list
 	userListView.render();
 })
-router.on('route:edit', function(id) {
+router.on('route:editUser', function(id) {
 	userEditView.render({
+		id : id
+	});
+})
+router.on('route:homeTask', function() {
+	// render user list
+	taskListView.render();
+})
+router.on('route:editTask', function(id) {
+	taskEditView.render({
 		id : id
 	});
 })
