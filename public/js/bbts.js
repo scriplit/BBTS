@@ -21,7 +21,6 @@ $.fn.serializeObject = function() {
 // options.url = 'http://localhost:3000' + options.url;
 // });
 
-
 // ----------- Users ------------
 
 var Users = Backbone.Collection.extend({
@@ -135,6 +134,8 @@ var taskListView = new TaskListView();
 
 var TaskEditView = Backbone.View.extend({
 	el : '.page',
+	initialize: function(){
+	},
 	events : {
 		'submit .edit-task-form' : 'saveTask',
 		'click .delete-task' : 'deleteTask'
@@ -175,6 +176,7 @@ var TaskEditView = Backbone.View.extend({
 								task : task
 							});
 					that.$el.html(template);
+					$('#datepicker1').datepicker().data('datepicker').setValue(new Date(task.start));
 				}
 			})
 		} else {
@@ -182,18 +184,18 @@ var TaskEditView = Backbone.View.extend({
 				task : null
 			});
 			that.$el.html(template);
+			$('#datepicker1').datepicker();
 		}
 	}
 });
 
 var taskEditView = new TaskEditView();
 
-
 // ---------- Home ------------
 
 var HomeView = Backbone.View.extend({
 	el : '.page',
-	render: function(options) {
+	render : function(options) {
 		var template = _.template($('#home-template').html());
 		this.$el.html(template);
 	}

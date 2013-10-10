@@ -127,14 +127,19 @@
   <hr />
   <form class="edit-task-form">
     <legend><%= task ? 'Edit' : 'New' %> Task</legend>
+
       <label>Title</label>
       <input name="title" type="text" value="<%= task ? task.get('title') : '' %>">
+
       <label>Details</label>
-      <textarea rows="4" cols="50" name="desc" value="<%= task ? task.get('desc') : '' %>"></textarea>
+      <textarea rows="4" cols="50" name="desc"><%= task ? task.get('desc') : '' %></textarea>
+
       <label>Start</label>
-      <input name="start" type="text" value="<%= task ? task.get('start') : '' %>">
+      <input type="text" id="datepicker1" name="start" data-date-format="yyyy-MM-dd">
+
       <label>Days</label>
       <input name="effort" type="text" value="<%= task ? task.get('effort') : '' %>">
+
       <hr />
      <button type="submit" class="btn"><%= task ? 'Update' : 'Create' %></button>
      <% if(task) { %>
