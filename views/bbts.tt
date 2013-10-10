@@ -1,91 +1,159 @@
-  <script type="text/template" id="user-list-template">
-    <a href="#/new" class="btn btn-primary">New</a>
-    <hr />
-    <table class="table striped" id="user-list">
-      <thead>
-        <tr>
-          <th>Login</th><th>First Name</th><th>Last Name</th><th>Unit</th><th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% _.each(users, function(user) { %>
-          <tr>
-          	<td><%= htmlEncode(user.get('login')) %></td>
-            <td><%= htmlEncode(user.get('firstname')) %></td>
-            <td><%= htmlEncode(user.get('lastname')) %></td>
-            <td><%= htmlEncode(user.get('unit')) %></td>
-            <td><a class="btn" href="#/edit/<%= user.id %>">Edit</a></td>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  </script>
+[%#
+     This template is first processed by Template::Toolkit server-side
+     (i.e. directives in square brackets:
+     
+                [percent-sign directive percent-sign]
+     
+     are processed according to the parameter hash passed to the Perl
+     template() function) ; then on the client side, unedrscore.js
+     processes the angle brackets directives:
+     
+                <percent-sign directive percent-sign>
+     
+     according to the parameter hash passed to the javascript template()
+     function.  
+%]
 
-  <script type="text/template" id="edit-user-template">
-    <form class="edit-user-form">
-      <legend><%= user ? 'Edit' : 'New' %> User</legend>
-        <label>Login</label>
-        <input name="login" type="text" value="<%= user ? user.get('login') : '' %>">
-        <label>First Name</label>
-        <input name="firstname" type="text" value="<%= user ? user.get('firstname') : '' %>">
-        <label>Last Name</label>
-        <input name="lastname" type="text" value="<%= user ? user.get('lastname') : '' %>">
-        <label>Unit</label>
-        <input name="unit" type="text" value="<%= user ? user.get('unit') : '' %>">
-        <hr />
-       <button type="submit" class="btn"><%= user ? 'Update' : 'Create' %></button>
-       <% if(user) { %>
-        <input type="hidden" name="id" value="<%= user.id %>" />
-       <button type="button" data-user-id="<%= user.id %>" class="btn btn-danger delete">Delete</button>
-       <% }; %>
-    </form>
-  </script>
+<script type="text/template" id="user-list-template">
   
-    <script type="text/template" id="task-list-template">
-    <a href="#/new" class="btn btn-primary">New</a>
+    <h1>User list</h1>
     <hr />
-    <table class="table striped" id="task-list">
-      <thead>
+    <div class="actions">
+	  <span class="btn-group app-wide-actions">
+	    <a href="#/taskmgr/" class="btn btn-primary">Go to task list</a>
+	  </span>
+	  <span class="btn-group page-wide-actions">
+	    <a href="#/usermgr/new" class="btn btn-primary">Create new user</a>
+	  </span>
+	</div>
+    <hr />
+  	<table class="table striped" id="user-list">
+    <thead>
+      <tr>
+        <th>Login</th><th>First Name</th><th>Last Name</th><th>Unit</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(users, function(user) { %>
         <tr>
-          <th>Task id</th><th>Title</th><th>Start</th><th>Days</th><th></th>
+        	<td><%= htmlEncode(user.get('login')) %></td>
+          <td><%= htmlEncode(user.get('firstname')) %></td>
+          <td><%= htmlEncode(user.get('lastname')) %></td>
+          <td><%= htmlEncode(user.get('unit')) %></td>
+          <td><a class="btn" href="#/usermgr/edit/<%= user.id %>">Edit</a></td>
         </tr>
-      </thead>
-      <tbody>
-        <% _.each(tasks, function(task) { %>
-          <tr>
-          	<td><%= htmlEncode(task.get('id')) %></td>
-            <td><%= htmlEncode(task.get('title')) %></td>
-            <td><%= htmlEncode(task.get('start')) %></td>
-            <td><%= htmlEncode(task.get('effort')) %></td>
-            <td><a class="btn" href="#/edit/<%= task.id %>">Edit</a></td>
-          </tr>
-        <% }); %>
-      </tbody>
+      <% }); %>
+    </tbody>
     </table>
-  </script>
 
-  <script type="text/template" id="edit-task-template">
-    <form class="edit-task-form">
-      <legend><%= task ? 'Edit' : 'New' %> Task</legend>
-        <label>Task id</label>
-        <input name="id" type="text" value="<%= task ? task.get('id') : '' %>">
-        <label>Title</label>
-        <input name="title" type="text" value="<%= task ? task.get('title') : '' %>">
-        <label>Start</label>
-        <input name="start" type="text" value="<%= user ? task.get('start') : '' %>">
-        <label>Days</label>
-        <input name="effort" type="text" value="<%= task ? task.get('effort') : '' %>">
-        <hr />
-       <button type="submit" class="btn"><%= task ? 'Update' : 'Create' %></button>
-       <% if(task) { %>
-        <input type="hidden" name="id" value="<%= task.id %>" />
-       <button type="button" data-task-id="<%= task.id %>" class="btn btn-danger delete">Delete</button>
-       <% }; %>
-    </form>
-  </script>
+</script>
+
+<script type="text/template" id="edit-user-template">
+    <h1>User details</h1>
+    <hr />
+    <div class="actions">
+	  <span class="btn-group app-wide-actions">
+	    <a href="#/usermgr/" class="btn btn-primary">Back to user list</a>
+	    <a href="#/taskmgr/" class="btn btn-primary">Go to task list</a>
+	  </span>
+	  <span class="btn-group page-wide-actions">
+	  </span>
+	</div>
+    <hr />
+  <form class="edit-user-form">
+    <legend><%= user ? 'Edit' : 'New' %> User</legend>
+      <label>Login</label>
+      <input name="login" type="text" value="<%= user ? user.get('login') : '' %>">
+      <label>First Name</label>
+      <input name="firstname" type="text" value="<%= user ? user.get('firstname') : '' %>">
+      <label>Last Name</label>
+      <input name="lastname" type="text" value="<%= user ? user.get('lastname') : '' %>">
+      <label>Unit</label>
+      <input name="unit" type="text" value="<%= user ? user.get('unit') : '' %>">
+      <hr />
+     <button type="submit" class="btn"><%= user ? 'Update' : 'Create' %></button>
+     <% if(user) { %>
+      <input type="hidden" name="id" value="<%= user.id %>" />
+     <button type="button" data-user-id="<%= user.id %>" class="btn btn-danger delete-user">Delete</button>
+     <% }; %>
+  </form>
+</script>
+
+  <script type="text/template" id="task-list-template">
+    <h1>Task list</h1>
+    <hr />
+    <div class="actions">
+	  <span class="btn-group app-wide-actions">
+	    <a href="#/usermgr/" class="btn btn-primary">Go to user list</a>
+	  </span>
+	  <span class="btn-group page-wide-actions">
+	    <a href="#/taskmgr/new" class="btn btn-primary">Create new task</a>
+	  </span>
+	</div>
   
-  <script type="text/template" id="home-template">
-  	<button type="button" class="users">Users</button>
-  	<button type="button" class="tasks">Tasks</button>
-  </script>
+  <hr />
+  <table class="table striped" id="task-list">
+    <thead>
+      <tr>
+        <th>Task id</th><th>Title</th><th>Start</th><th>Days</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(tasks, function(task) { %>
+        <tr>
+        	<td><%= htmlEncode(task.get('id')) %></td>
+          <td><%= htmlEncode(task.get('title')) %></td>
+          <td><%= htmlEncode(task.get('start')) %></td>
+          <td><%= htmlEncode(task.get('effort')) %></td>
+          <td><a class="btn" href="#/taskmgr/edit/<%= task.id %>">Edit</a></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</script>
+
+<script type="text/template" id="edit-task-template">
+    <h1>Task details</h1>
+    <hr />
+    <div class="actions">
+	  <span class="btn-group app-wide-actions">
+	    <a href="#/taskmgr/" class="btn btn-primary">Back to task list</a>
+	    <a href="#/usermgr/" class="btn btn-primary">Go to user list</a>
+	  </span>
+	  <span class="btn-group page-wide-actions">
+	  </span>
+	</div>
   
+  <hr />
+  <form class="edit-task-form">
+    <legend><%= task ? 'Edit' : 'New' %> Task</legend>
+      <label>Title</label>
+      <input name="title" type="text" value="<%= task ? task.get('title') : '' %>">
+      <label>Details</label>
+      <textarea rows="4" cols="50" name="desc" value="<%= task ? task.get('desc') : '' %>"></textarea>
+      <label>Start</label>
+      <input name="start" type="text" value="<%= task ? task.get('start') : '' %>">
+      <label>Days</label>
+      <input name="effort" type="text" value="<%= task ? task.get('effort') : '' %>">
+      <hr />
+     <button type="submit" class="btn"><%= task ? 'Update' : 'Create' %></button>
+     <% if(task) { %>
+      <input type="hidden" name="id" value="<%= task.id %>" />
+     <button type="button" data-task-id="<%= task.id %>" class="btn btn-danger delete-task">Delete</button>
+     <% }; %>
+  </form>
+</script>
+
+<script type="text/template" id="home-template">
+    <h1>[% title_page %]</h1>
+    <hr />
+    <div class="actions">
+	  <span class="btn-group app-wide-actions">
+	    <a href="#/taskmgr/" class="btn btn-primary">Go to task list</a>
+	    <a href="#/usermgr/" class="btn btn-primary">Go to user list</a>
+	  </span>
+	  <span class="btn-group page-wide-actions">
+	  </span>
+	</div>
+</script>
+

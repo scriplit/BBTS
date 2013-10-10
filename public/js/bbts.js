@@ -21,6 +21,9 @@ $.fn.serializeObject = function() {
 // options.url = 'http://localhost:3000' + options.url;
 // });
 
+
+// ----------- Users ------------
+
 var Users = Backbone.Collection.extend({
 	url : '/users'
 });
@@ -28,16 +31,6 @@ var Users = Backbone.Collection.extend({
 var User = Backbone.Model.extend({
 	urlRoot : '/user'
 });
-
-var Tasks = Backbone.Collection.extend({
-	url : '/tasks'
-});
-
-var User = Backbone.Model.extend({
-	urlRoot : '/task'
-});
-
-// ----------- Users ------------
 
 var UserListView = Backbone.View.extend({
 	el : '.page',
@@ -61,14 +54,14 @@ var UserEditView = Backbone.View.extend({
 	el : '.page',
 	events : {
 		'submit .edit-user-form' : 'saveUser',
-		'click .delete' : 'deleteUser'
+		'click .delete-user' : 'deleteUser'
 	},
 	saveUser : function(ev) {
 		var userDetails = $(ev.currentTarget).serializeObject();
 		var user = new User();
 		user.save(userDetails, {
 			success : function(user) {
-				router.navigate('', {
+				router.navigate('usermgr/', {
 					trigger : true
 				});
 			}
@@ -79,7 +72,7 @@ var UserEditView = Backbone.View.extend({
 		this.user.destroy({
 			success : function() {
 				console.log('destroyed');
-				router.navigate('', {
+				router.navigate('usermgr/', {
 					trigger : true
 				});
 			}
@@ -114,6 +107,14 @@ var userEditView = new UserEditView();
 
 // ----------- Tasks ------------
 
+var Tasks = Backbone.Collection.extend({
+	url : '/tasks'
+});
+
+var Task = Backbone.Model.extend({
+	urlRoot : '/task'
+});
+
 var TaskListView = Backbone.View.extend({
 	el : '.page',
 	render : function() {
@@ -136,14 +137,14 @@ var TaskEditView = Backbone.View.extend({
 	el : '.page',
 	events : {
 		'submit .edit-task-form' : 'saveTask',
-		'click .delete' : 'deleteTask'
+		'click .delete-task' : 'deleteTask'
 	},
 	saveTask : function(ev) {
 		var taskDetails = $(ev.currentTarget).serializeObject();
 		var task = new Task();
 		task.save(taskDetails, {
 			success : function(task) {
-				router.navigate('', {
+				router.navigate('taskmgr/', {
 					trigger : true
 				});
 			}
@@ -154,7 +155,7 @@ var TaskEditView = Backbone.View.extend({
 		this.task.destroy({
 			success : function() {
 				console.log('destroyed');
-				router.navigate('', {
+				router.navigate('taskmgr/', {
 					trigger : true
 				});
 			}
@@ -178,32 +179,20 @@ var TaskEditView = Backbone.View.extend({
 			})
 		} else {
 			var template = _.template($('#edit-task-template').html(), {
-				user : null
+				task : null
 			});
 			that.$el.html(template);
 		}
 	}
 });
 
-var taskListView = new TaskListView();
+var taskEditView = new TaskEditView();
 
 
 // ---------- Home ------------
 
 var HomeView = Backbone.View.extend({
 	el : '.page',
-	events : {
-		'click .users' : 'manageUsers',
-		'click .tasks' : 'manageTasks'
-	},
-	manageUsers : function(ev) {
-		router.navigate('usermgr', {trigger: 'true'});
-		return false;
-	},
-	manageTasks : function(ev) {
-		router.navigate('taskmgr', {trigger: 'true'});
-		return false;
-	},
 	render: function(options) {
 		var template = _.template($('#home-template').html());
 		this.$el.html(template);
@@ -216,10 +205,10 @@ var homeView = new HomeView();
 var Router = Backbone.Router.extend({
 	routes : {
 		"" : "home",
-		"usermgr" : "homeUser",
+		"usermgr/" : "homeUser",
 		"usermgr/edit/:id" : "editUser",
 		"usermgr/new" : "editUser",
-		"taskmgr" : "homeTask",
+		"taskmgr/" : "homeTask",
 		"taskmgr/edit/:id" : "editTask",
 		"taskmgr/new" : "editTask",
 	}

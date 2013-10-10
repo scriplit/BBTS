@@ -18,7 +18,7 @@ __PACKAGE__->add_columns(
 		data_type   => 'text',
 		is_nullable => 1,
 	},
-	start_date => {
+	start => {
 		data_type   => 'text',
 		is_nullable => 0,
 	},

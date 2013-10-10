@@ -10,12 +10,6 @@ use Dancer2::Plugin::REST;
 use Dancer2::Plugin::DBIC qw(schema resultset rset);
 use BBTS::Schema;
 
-#hook before => sub {
-#    if (!session('user') && request->dispatch_path !~ m{^/login}) {
-#        forward '/login', { requested_path => request->dispatch_path };
-#    }
-#};
-
 get '/login' => sub {
 	template 'login',
 	  { path => param('requested_path'), title_page => "Login" };
@@ -33,24 +27,14 @@ post '/login' => sub {
 	}
 };
 
-#get '/' => sub {
-#	send_file 'index.html';
-#};
 
-resource 'task' => 'get' => \&on_get_task,
-  'create'      => \&on_create_task,
-  'delete'      => \&on_delete_task,
-  'update'      => \&on_update_task;
+# --------- Start ---------------
 
 get '/' => sub {
-	template 'bbts', { title_page => "BBTS" };
+	template 'bbts', { title_page => "Busy Bear Task Server" };
 };
 
 # --------- Users ---------------
-
-get '/usermgr/' => sub {
-	template 'usermgr', { title_page => "User management" };
-};
 
 get '/users' => sub {
 	my @set = rset('User')->all;
@@ -145,10 +129,6 @@ sub on_update_user {
 
 # --------- Tasks --------------
 
-get '/taskmgr/' => sub {
-	template 'taskmgr', { title_page => "Task management" };
-};
-
 get '/tasks' => sub {
 	my @set = rset('Task')->all;
 	my $ret = [];
@@ -164,6 +144,12 @@ get '/tasks' => sub {
 	}
 	return to_json($ret);
 };
+
+resource 'task' => 'get' => \&on_get_task,
+  'create'      => \&on_create_task,
+  'delete'      => \&on_delete_task,
+  'update'      => \&on_update_task;
+
 
 sub on_get_task {
 	my $id   = params->{'id'};
@@ -215,7 +201,7 @@ sub on_update_task {
 	my $id   = $task->{id};
 	if ( defined $id ) {
 		my @taskSet = rset('Task')->find($id);
-		if ( @taskSet == 1 ) {
+		if ( @taskSet == 1 && defined $taskSet[0]) {
 			$taskSet[0]->update(
 				{
 					title  => $task->{title},
